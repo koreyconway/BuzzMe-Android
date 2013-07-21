@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Buzzme</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="shake_to_buzz">Shake to Buzz Friend</string>
+    <string name="friends_ip">Friend\'s IP Address</string>
+    <string name="my_name">My Name</string>
+
+</resources>
