@@ -12,6 +12,8 @@ import android.os.Vibrator;
 import android.provider.Settings.Secure;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ public class MainActivity extends Activity implements OnShakeListener {
 	private EditText mVName;
 	private Firebase mFb;
 	private String mDeviceId;
+	private String mUserName = "Anonymous";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,17 @@ public class MainActivity extends Activity implements OnShakeListener {
 				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		mVName = (EditText) this.findViewById(R.id.name);
 		mDeviceId = Secure.getString(getContentResolver(), Secure.ANDROID_ID);
+		mVName.setOnFocusChangeListener(new OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View view, boolean hasFocus) {
+				if (!hasFocus && view == mVName) {
+					mUserName = mVName.getText().toString();
+					if (mUserName.length() == 0) {
+						mUserName = "Anonymous";
+					}
+				}
+			}
+		});
 	}
 
 	@Override
@@ -98,27 +112,21 @@ public class MainActivity extends Activity implements OnShakeListener {
 	}
 
 	private void vibrate() {
-		AsyncTask<Void, Void, Void> at = new AsyncTask<Void, Void, Void>() {
+		AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
 			@Override
 			protected Void doInBackground(Void... params) {
 				mVibrator.vibrate(300); // Vibrate for 300 milliseconds
-				Log.d(tag, "vibrating");
 				return null;
 			}
 		};
-		at.execute();
+		task.execute();
 	}
 
 	@Override
 	public void onShake() {
 		Toast.makeText(getApplicationContext(), "Sending shake",
-				Toast.LENGTH_LONG).show();
+				Toast.LENGTH_SHORT).show();
 		Firebase fbPush = mFb.push();
-
-		if (mVName.getText().length() > 0) {
-			mDeviceId = mVName.getText().toString();
-		}
-
 		fbPush.setValue(mDeviceId);
 	}
 }

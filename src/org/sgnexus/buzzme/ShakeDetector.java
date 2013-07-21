@@ -10,10 +10,10 @@ public class ShakeDetector implements SensorEventListener {
     private static final int MIN_SHAKE_ACCELERATION = 5;
     
     // Minimum number of movements to register a shake
-    private static final int MIN_MOVEMENTS = 2;
+    private static final int MIN_MOVEMENTS = 4;
     
     // Maximum time (in milliseconds) for the whole shake to occur
-    private static final int MAX_SHAKE_DURATION = 500;
+    private static final int MAX_SHAKE_DURATION = 2000;
 	
     // Arrays to store gravity and linear acceleration values
 	private float[] mGravity = { 0.0f, 0.0f, 0.0f };
